@@ -1,5 +1,6 @@
-<app-inventory-addmodal></app-inventory-addmodal>
+<!-- <app-inventory-addmodal></app-inventory-addmodal> -->
 
+<button class="btn btn-lg bg-primary text-white mb-2" (click)="openModal(add)">+ Add new inventory</button>
 <!-- <button class="btn bg-primary text-white mb-3">+ Add new inventory</button> -->
 
 <table class="table table-striped table-hover">
@@ -17,15 +18,125 @@
     <tbody class="table-group-divider">
         <tr *ngFor="let item of allInventory" class="align-middle">
             <!-- <td>{{item.id}}</td> -->
-            <td>{{item.name}}</td>
+            <td class="pointer" (click)="openModalView(view, item.id)">
+                {{item.name}}</td>
             <td class="text-end pe-2">{{item.price | currency: 'PHP'}}</td>
             <td class="text-end pe-2">{{item.quantity}}</td>
             <td>{{item.description}}</td>
             <td class="col-actions">
-                <button class="btn bg-primary text-white me-1 py-1 px-2">Edit</button>
+                <button class="btn bg-primary text-white me-1 py-1 px-2" 
+                    (click)="openModalEdit(edit, item.id)">Edit</button>
                 <button class="btn bg-success text-white me-1 py-1 px-2">Add to cart</button>
             </td>
         </tr>
     </tbody>
     
 </table>
+
+
+
+<ng-template #view let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-basic-title">Item information</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+        <form id="addForm">
+            <div class="mb-3">
+                <label for="item-name" class="form-label">Name</label>
+                <input ngbAutofocus type="text" class="form-control" disabled
+                    ngModel="{{selectedItem.name}}" name="name" id="item-name">
+              </div>
+              <div class="mb-3">
+                <label for="item-price" class="form-label">Price</label>
+                <input type="number" class="form-control" disabled
+                    ngModel="{{selectedItem.price}}" name="price" id="item-price">
+              </div>
+              <div class="mb-3">
+                <label for="item-price" class="form-label">Quantity</label>
+                <input type="number" class="form-control" disabled
+                    ngModel="{{selectedItem.quantity}}" name="quantity" id="item-quantity">
+              </div>
+              <div class="mb-3">
+                <label for="item-price" class="form-label">Description</label>
+                <textarea class="form-control" disabled
+                    ngModel="{{selectedItem.description}}" name="description" id="item-description">
+                </textarea>
+              </div>
+		</form>
+	</div>
+</ng-template>
+
+<ng-template #add let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-basic-title">Add new inventory</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+		<form #addForm="ngForm" (ngSubmit)="onAddInventory(addForm)" id="addForm">
+            <div class="mb-3">
+                <label for="item-name" class="form-label">Name</label>
+                <input ngbAutofocus type="text" class="form-control" 
+                    ngModel name="name" id="item-name">
+              </div>
+              <div class="mb-3">
+                <label for="item-price" class="form-label">Price</label>
+                <input type="number" class="form-control" 
+                    ngModel name="price" id="item-price">
+              </div>
+              <div class="mb-3">
+                <label for="item-price" class="form-label">Quantity</label>
+                <input type="number" class="form-control" 
+                    ngModel name="quantity" id="item-quantity">
+              </div>
+              <div class="mb-3">
+                <label for="item-price" class="form-label">Description</label>
+                <textarea class="form-control" placeholder="Leave a comment here" 
+                    ngModel name="description" id="item-description">
+                </textarea>
+              </div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button [disabled]="addForm.invalid" type="submit" form="addForm" class="btn btn-lg btn-outline-success" 
+            (click)="modal.close('Save click')">Save</button>
+	</div>
+</ng-template>
+
+<ng-template #edit let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-basic-title">Add new inventory</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+		<form #editForm="ngForm" (ngSubmit)="onUpdateInventory(editForm)" id="addForm">
+            <input type="hidden" class="form-control"
+                    ngModel="{{selectedItem.id}}" name="id" id="item-id">
+            <div class="mb-3">
+                <label for="item-name" class="form-label">Name</label>
+                <input ngbAutofocus type="text" class="form-control"
+                    ngModel="{{selectedItem.name}}" name="name" id="item-name">
+              </div>
+              <div class="mb-3">
+                <label for="item-price" class="form-label">Price</label>
+                <input type="number" class="form-control"
+                    ngModel="{{selectedItem.price}}" name="price" id="item-price">
+              </div>
+              <div class="mb-3">
+                <label for="item-price" class="form-label">Quantity</label>
+                <input type="number" class="form-control"
+                    ngModel="{{selectedItem.quantity}}" name="quantity" id="item-quantity">
+              </div>
+              <div class="mb-3">
+                <label for="item-price" class="form-label">Description</label>
+                <textarea class="form-control"
+                    ngModel="{{selectedItem.description}}" name="description" id="item-description">
+                </textarea>
+              </div>
+		</form>
+	</div>
+	<div class="modal-footer">
+        <button class="btn btn-lg btn-outline-danger" (click)="onDeleteInventory(selectedItem.id)">Delete Item</button>
+        <button type="submit" form="addForm" class="btn btn-lg btn-outline-success">Save</button>
+	</div>
+</ng-template>

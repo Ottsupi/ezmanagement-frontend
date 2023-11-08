@@ -9,3 +9,7 @@ table .col-price,
 table .col-quantity {
     width: 10%;
 }
+
+.pointer {
+    cursor: pointer;
+}

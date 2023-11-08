@@ -19,4 +19,16 @@ export class InventoryService {
   public addInventory(inventory: Inventory): Observable<Inventory> {
     return this.http.post<Inventory>(`${this.apiServerUrl}/inventory/add`, inventory);
   }
+
+  public findInventory(id: number): Observable<Inventory> {
+    return this.http.get<Inventory>(`${this.apiServerUrl}/inventory/find/${id}`);
+  }
+
+  public updateInventory(inventory: Inventory): Observable<Inventory> {
+    return this.http.put<Inventory>(`${this.apiServerUrl}/inventory/update`, inventory);
+  }
+
+  public deleteInventory(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiServerUrl}/inventory/delete/${id}`);
+  }
 }
