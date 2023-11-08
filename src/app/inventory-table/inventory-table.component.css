@@ -1,0 +1,11 @@
+
+
+table .col-actions {
+    width: 1%;
+    white-space: nowrap;
+}
+
+table .col-price,
+table .col-quantity {
+    width: 10%;
+}
