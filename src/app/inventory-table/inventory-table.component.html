@@ -39,16 +39,18 @@
 
 
 
+<!-- MODALS -->
+
 <ng-template #view let-modal>
 	<div class="modal-header">
 		<h4 class="modal-title" id="modal-basic-title">Item information</h4>
-		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+		<button ngbAutofocus type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
 	</div>
 	<div class="modal-body">
         <form id="addForm">
             <div class="mb-3">
                 <label for="item-name" class="form-label">Name</label>
-                <input ngbAutofocus type="text" class="form-control" disabled
+                <input type="text" class="form-control" disabled
                     ngModel="{{selectedItem.name}}" name="name" id="item-name">
               </div>
               <div class="mb-3">
@@ -140,7 +142,22 @@
 		</form>
 	</div>
 	<div class="modal-footer">
+        <button class="btn btn-lg btn-outline-danger" (click)="openModal(delete)">Delete Item</button>
+        <button type="submit" form="addForm" class="btn btn-lg btn-success">Save</button>
+	</div>
+</ng-template>
+
+<ng-template #delete let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-basic-title">Add new inventory</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+		Are you sure you want to delete "{{selectedItem.name}}"
+	</div>
+	<div class="modal-footer">
+        <button type="submit" form="addForm" class="btn btn-lg btn-secondary" 
+            (click)="modal.dismiss()" ngbAutofocus>Cancel</button>
         <button class="btn btn-lg btn-outline-danger" (click)="onDeleteInventory(selectedItem.id)">Delete Item</button>
-        <button type="submit" form="addForm" class="btn btn-lg btn-outline-success">Save</button>
 	</div>
 </ng-template>

@@ -7,17 +7,13 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ModalBasicComponent } from './modal-basic/modal-basic.component';
 import { InventoryTableComponent } from './inventory-table/inventory-table.component';
 import { HttpClientModule } from '@angular/common/http';
-import { InventoryAddmodalComponent } from './inventory-table/inventory-addmodal/inventory-addmodal.component';
 import { FormsModule } from '@angular/forms';
-import { InventoryEditmodalComponent } from './inventory-table/inventory-editmodal/inventory-editmodal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ModalBasicComponent,
     InventoryTableComponent,
-    InventoryAddmodalComponent,
-    InventoryEditmodalComponent
   ],
   imports: [
     BrowserModule,

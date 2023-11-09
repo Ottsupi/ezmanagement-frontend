@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Inventory } from '../inventory';
 import { InventoryService } from '../inventory.service';
-import { HttpErrorResponse } from '@angular/common/http';
-import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
 
 @Component({
