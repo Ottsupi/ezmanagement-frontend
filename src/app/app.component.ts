@@ -6,5 +6,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  handleSendToCart($event: any) {
+    throw new Error('Method not implemented.');
+  }
   title = 'ezmanagement-frontend';
 }

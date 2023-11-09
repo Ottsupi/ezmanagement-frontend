@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Inventory } from '../inventory';
 import { InventoryService } from '../inventory.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -12,7 +12,6 @@ import { NgForm } from '@angular/forms';
 export class InventoryTableComponent implements OnInit {
 
   public allInventory: Inventory[] = [];
-  closeResult: string = '';
   selectedItem: Inventory = {
     id: 0,
     name: '',
@@ -35,6 +34,11 @@ export class InventoryTableComponent implements OnInit {
         this.allInventory = response;
       }
     )
+  }
+
+  @Output() eventSendToCart = new EventEmitter;
+  public sendToCart(): void {
+    this.eventSendToCart.emit('test');
   }
 
   openModal(modal: any) {
@@ -61,10 +65,15 @@ export class InventoryTableComponent implements OnInit {
 		)
 	}
 
+  openModalDeleteConfirm(modal: any) {
+		this.modalService.open(modal, { centered: true });
+	}
+
   onAddInventory(addForm: NgForm) {
     this.inventoryService.addInventory(addForm.value).subscribe(
 			(response: Inventory) => {
 				console.log(response);
+        this.getAllInventory();
 			}
 		)
   }
@@ -73,12 +82,17 @@ export class InventoryTableComponent implements OnInit {
     this.inventoryService.updateInventory(editForm.value).subscribe(
 			(response: Inventory) => {
 				console.log(response);
+        this.getAllInventory();
 			}
 		)
   }
 
   onDeleteInventory(id: number) {
-    this.inventoryService.deleteInventory(id).subscribe()
-    // console.log(`to be deleted: ${id}`)
+    this.inventoryService.deleteInventory(id).subscribe(
+      () => {
+        this.getAllInventory();
+        this.modalService.dismissAll();
+      }
+    )
   }
 }

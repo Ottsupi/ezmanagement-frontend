@@ -111,7 +111,7 @@
 
 <ng-template #edit let-modal>
 	<div class="modal-header">
-		<h4 class="modal-title" id="modal-basic-title">Add new inventory</h4>
+		<h4 class="modal-title" id="modal-basic-title">Edit inventory</h4>
 		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
 	</div>
 	<div class="modal-body">
@@ -142,22 +142,24 @@
 		</form>
 	</div>
 	<div class="modal-footer">
-        <button class="btn btn-lg btn-outline-danger" (click)="openModal(delete)">Delete Item</button>
-        <button type="submit" form="addForm" class="btn btn-lg btn-success">Save</button>
+        <button class="btn btn-lg btn-outline-danger" (click)="openModalDeleteConfirm(delete)">Delete Item</button>
+        <button type="submit" form="addForm" class="btn btn-lg btn-success" (click)="modal.close('Save click')">Save</button>
 	</div>
 </ng-template>
 
-<ng-template #delete let-modal>
+<ng-template #delete let-modal class="pb-5">
 	<div class="modal-header">
-		<h4 class="modal-title" id="modal-basic-title">Add new inventory</h4>
+		<h4 class="modal-title" id="modal-basic-title">Delete inventory</h4>
 		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
 	</div>
 	<div class="modal-body">
-		Are you sure you want to delete "{{selectedItem.name}}"
+		Are you sure you want to delete "{{selectedItem.name}}"?
 	</div>
 	<div class="modal-footer">
         <button type="submit" form="addForm" class="btn btn-lg btn-secondary" 
             (click)="modal.dismiss()" ngbAutofocus>Cancel</button>
-        <button class="btn btn-lg btn-outline-danger" (click)="onDeleteInventory(selectedItem.id)">Delete Item</button>
+        <button class="btn btn-lg btn-outline-danger" 
+        (click)="onDeleteInventory(selectedItem.id); modal.close('Save click')"
+        >Delete Item</button>
 	</div>
 </ng-template>

@@ -1,6 +1,8 @@
 <div class="row m-0">
     <div class="col-7">
-        <app-inventory-table></app-inventory-table>
+        <app-inventory-table
+            (eventSendToCart)="handleSendToCart($event)"
+        ></app-inventory-table>
     </div>
 
     <div class="col">
