@@ -29,8 +29,11 @@
             <td>{{item.description}}</td>
             <td class="col-actions">
                 <button class="btn bg-primary text-white me-1 py-1 px-2" 
-                    (click)="openModalEdit(edit, item.id)">Edit</button>
-                <button class="btn bg-success text-white me-1 py-1 px-2">Add to cart</button>
+                    (click)="openModalEdit(edit, item.id)"
+                >Edit</button>
+                <button class="btn bg-success text-white me-1 py-1 px-2"
+                    (click)="sendToCart(item)"
+                >Add to cart</button>
             </td>
         </tr>
     </tbody>

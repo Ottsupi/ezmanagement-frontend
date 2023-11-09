@@ -11,7 +11,7 @@ import { NgForm } from '@angular/forms';
 })
 export class InventoryTableComponent implements OnInit {
 
-  public allInventory: Inventory[] = [];
+  allInventory: Inventory[] = [];
   selectedItem: Inventory = {
     id: 0,
     name: '',
@@ -28,7 +28,7 @@ export class InventoryTableComponent implements OnInit {
     this.getAllInventory();
   }
 
-  public getAllInventory(): void {
+  getAllInventory(): void {
     this.inventoryService.getAllInventory().subscribe(
       (response: Inventory[]) => {
         this.allInventory = response;
@@ -37,8 +37,11 @@ export class InventoryTableComponent implements OnInit {
   }
 
   @Output() eventSendToCart = new EventEmitter;
-  public sendToCart(): void {
-    this.eventSendToCart.emit('test');
+  sendToCart(inventory: Inventory): void {
+    if (inventory.quantity > 0) {
+      this.eventSendToCart.emit(inventory);
+      inventory.quantity--;
+    }
   }
 
   openModal(modal: any) {

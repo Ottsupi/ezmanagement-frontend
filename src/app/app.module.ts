@@ -8,12 +8,14 @@ import { ModalBasicComponent } from './modal-basic/modal-basic.component';
 import { InventoryTableComponent } from './inventory-table/inventory-table.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { CartTableComponent } from './cart-table/cart-table.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ModalBasicComponent,
     InventoryTableComponent,
+    CartTableComponent,
   ],
   imports: [
     BrowserModule,
