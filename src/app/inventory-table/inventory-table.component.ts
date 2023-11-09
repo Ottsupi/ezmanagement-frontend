@@ -3,6 +3,7 @@ import { Inventory } from '../inventory';
 import { InventoryService } from '../inventory.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
+import { InventoryToCartService } from '../inventory-to-cart.service';
 
 @Component({
   selector: 'app-inventory-table',
@@ -22,10 +23,14 @@ export class InventoryTableComponent implements OnInit {
 
   constructor(
     private inventoryService: InventoryService,
+    private inventoryToCartService: InventoryToCartService,
     private modalService: NgbModal
   ) {}
   ngOnInit(): void {
     this.getAllInventory();
+    this.inventoryToCartService.refreshInventoryRequest$.subscribe((res) => {
+      if (res) this.getAllInventory();
+    })
   }
 
   getAllInventory(): void {
@@ -36,10 +41,9 @@ export class InventoryTableComponent implements OnInit {
     )
   }
 
-  @Output() eventSendToCart = new EventEmitter;
   sendToCart(inventory: Inventory): void {
     if (inventory.quantity > 0) {
-      this.eventSendToCart.emit(inventory);
+      this.inventoryToCartService.sendItem(inventory)
       inventory.quantity--;
     }
   }

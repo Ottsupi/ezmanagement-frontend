@@ -7,11 +7,16 @@ import { Inventory } from './inventory';
 })
 export class InventoryToCartService {
   private item = new Subject<Inventory>();
+  private refreshInventory = new Subject<boolean>();
 
   itemObservable$ = this.item.asObservable();
+  refreshInventoryRequest$ = this.refreshInventory.asObservable();
 
   sendItem(item: Inventory) {
     this.item.next(item)
+  }
+  requestRefreshInventory() {
+    this.refreshInventory.next(true)
   }
 
   constructor() { }
