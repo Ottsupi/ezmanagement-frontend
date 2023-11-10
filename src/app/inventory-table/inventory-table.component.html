@@ -107,7 +107,7 @@
 		</form>
 	</div>
 	<div class="modal-footer">
-		<button [disabled]="addForm.invalid" type="submit" form="addForm" class="btn btn-lg btn-outline-success" 
+		<button [disabled]="addForm.invalid" type="submit" form="addForm" class="btn btn-lg btn-success" 
             (click)="modal.close('Save click')">Save</button>
 	</div>
 </ng-template>
@@ -152,13 +152,15 @@
 
 <ng-template #delete let-modal class="pb-5">
 	<div class="modal-header">
-		<h4 class="modal-title" id="modal-basic-title">Delete inventory</h4>
+		<h4 class="modal-title" id="modal-basic-title">Delete item</h4>
 		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
 	</div>
 	<div class="modal-body">
-		Are you sure you want to delete "{{selectedItem.name}}"?
+        <h4>
+            Are you sure you want to <span class="delete-highlight">delete "{{selectedItem.name}}"</span>?
+        </h4>
 	</div>
-	<div class="modal-footer">
+	<div class="modal-footer border-0">
         <button type="submit" form="addForm" class="btn btn-lg btn-secondary" 
             (click)="modal.dismiss()" ngbAutofocus>Cancel</button>
         <button class="btn btn-lg btn-outline-danger" 

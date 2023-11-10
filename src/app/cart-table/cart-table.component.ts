@@ -1,6 +1,9 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { Cart } from '../cart';
 import { Inventory } from '../inventory';
+import { Subject, takeUntil } from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 import { InventoryToCartService } from '../inventory-to-cart.service';
 
 @Component({
@@ -8,20 +11,30 @@ import { InventoryToCartService } from '../inventory-to-cart.service';
   templateUrl: './cart-table.component.html',
   styleUrls: ['./cart-table.component.css']
 })
-export class CartTableComponent implements OnInit {
+export class CartTableComponent implements OnInit, OnDestroy {
+
+  private destroy$ = new Subject<void>();
 
   inCart: Cart[] = [];
   totalPrice: number = 0;
   totalQty: number = 0;
 
   constructor(
-    private inventoryToCartService: InventoryToCartService
+    private inventoryToCartService: InventoryToCartService,
+    private modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
-    this.inventoryToCartService.itemObservable$.subscribe((res) => {
-      this.addToCart(res);
-    })
+    this.inventoryToCartService.itemObservable$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.addToCart(res);
+      })
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   addToCart(item: Inventory) {
@@ -40,8 +53,6 @@ export class CartTableComponent implements OnInit {
     } else {
       this.inCart.push(cartItem);
       this.incrementQty(cartItem);
-      this.calculateTotalPrice();
-      this.calculateTotalQty();
     }
   }
   
@@ -103,17 +114,21 @@ export class CartTableComponent implements OnInit {
   }
 
   findItemIndexInCart(id: number) {
-    const itemIDsInCart = this.inCart.map(x => x.id);
-    return itemIDsInCart.findIndex((x) => x == id);
+    return this.inCart.findIndex((x) => x.id == id);
   }
 
   removeItem(id: number) {
-    const qtyInCart = this.inCart.filter(x => x.id == id)[0].quantity;
-    const newCart = this.inCart.filter(x => x.id !== id);
-    this.inCart = newCart;
+    const index = this.findItemIndexInCart(id); 
+    const qtyInCart = this.inCart[index].quantity;
+    this.inCart.splice(index, 1);
 
-    this.totalQty = this.inCart.length;
     this.calculateTotalPrice();
+    this.calculateTotalQty();
     this.inventoryToCartService.updateInventoryStock(id, qtyInCart);
+  }
+
+
+  openClearModal(modal: TemplateRef<any>) {
+    if (this.inCart.length > 0) this.modalService.open(modal);
   }
 }

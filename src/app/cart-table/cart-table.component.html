@@ -1,6 +1,6 @@
 <div class="d-flex flex-row justify-content-between align-items-center">
     <div class="display-4 text-white">Cart</div>
-    <button class="d-flex btn btn-lg bg-danger text-white mt-2" (click)="clearCart()">
+    <button class="d-flex btn btn-lg bg-danger text-white mt-2" (click)="openClearModal(clear)">
         Clear 
     </button>
 </div>
@@ -47,3 +47,23 @@
         </tr>
     </tfoot>
 </table>
+
+
+<ng-template #clear let-modal class="pb-5">
+	<div class="modal-header border-0">
+	</div>
+	<div class="modal-body">
+        <span >
+            <h4>
+                Are you sure you want to <span class="delete-highlight">clear the cart</span>?
+            </h4> 
+        </span>
+	</div>
+	<div class="modal-footer border-0">
+        <button type="submit" form="addForm" class="btn btn-lg btn-secondary" 
+            (click)="modal.dismiss()" ngbAutofocus>Cancel</button>
+        <button class="btn btn-lg btn-outline-danger" 
+        (click)="clearCart(); modal.close()"
+        >Clear Cart</button>
+	</div>
+</ng-template>

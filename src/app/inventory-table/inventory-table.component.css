@@ -1,5 +1,3 @@
-
-
 table .col-actions {
     width: 1%;
     white-space: nowrap;
@@ -12,4 +10,8 @@ table .col-quantity {
 
 .pointer {
     cursor: pointer;
+}
+
+.delete-highlight {
+    color: red;
 }

@@ -1,8 +1,9 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Inventory } from '../inventory';
 import { InventoryService } from '../inventory.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
+
 import { InventoryToCartService } from '../inventory-to-cart.service';
 
 @Component({
@@ -13,13 +14,6 @@ import { InventoryToCartService } from '../inventory-to-cart.service';
 export class InventoryTableComponent implements OnInit {
 
   allInventory: Inventory[] = [];
-  emptyItem: Inventory = {
-    id: 0,
-    name: '',
-    price: 0,
-    quantity: 0,
-    description: ''
-  };
   selectedItem: Inventory = {
     id: 0,
     name: '',
@@ -33,6 +27,7 @@ export class InventoryTableComponent implements OnInit {
     private inventoryToCartService: InventoryToCartService,
     private modalService: NgbModal
   ) {}
+
   ngOnInit(): void {
     this.getAllInventory();
     this.inventoryToCartService.refreshInventoryRequest$.subscribe((res) => {
@@ -44,11 +39,14 @@ export class InventoryTableComponent implements OnInit {
   }
 
   getAllInventory(): void {
-    this.inventoryService.getAllInventory().subscribe(
-      (response: Inventory[]) => {
+    this.inventoryService.getAllInventory().subscribe({
+      next: (response: Inventory[]) => {
         this.allInventory = response;
+      },
+      error: (error) => {
+        console.error(error);
       }
-    )
+    });
   }
 
   sendToCart(inventory: Inventory): void {
@@ -57,59 +55,39 @@ export class InventoryTableComponent implements OnInit {
     }
   }
 
-  openModal(modal: any) {
-		this.modalService.open(modal);
-	}
-
-  openModalView(modal: any, id: number) {
-		this.modalService.open(modal);
-    this.inventoryService.findInventory(id).subscribe(
-			(response: Inventory) => {
-				console.log(response);
-        this.selectedItem = response;
-			}
-		)
-	}
-
-  openModalEdit(modal: any, id: number) {
-		this.modalService.open(modal);
-    this.inventoryService.findInventory(id).subscribe(
-			(response: Inventory) => {
-				console.log(response);
-        this.selectedItem = response;
-			}
-		)
-	}
-
-  openModalDeleteConfirm(modal: any) {
-		this.modalService.open(modal, { centered: true });
-	}
-
   onAddInventory(addForm: NgForm) {
-    this.inventoryService.addInventory(addForm.value).subscribe(
-			(response: Inventory) => {
+    this.inventoryService.addInventory(addForm.value).subscribe({
+      next: (response: Inventory) => {
 				console.log(response);
         this.getAllInventory();
-			}
-		)
+			},
+      error: (error) => {
+        console.error(error);
+      }
+    });
   }
 
   onUpdateInventory(editForm: NgForm) {
-    this.inventoryService.updateInventory(editForm.value).subscribe(
-			(response: Inventory) => {
-				console.log(response);
+    this.inventoryService.updateInventory(editForm.value).subscribe({
+      complete: () => {
         this.getAllInventory();
-			}
-		)
+			},
+      error: (error) => {
+        console.error(error);
+      }
+    });
   }
 
   onDeleteInventory(id: number) {
-    this.inventoryService.deleteInventory(id).subscribe(
-      () => {
+    this.inventoryService.deleteInventory(id).subscribe({
+      complete: () => {
         this.getAllInventory();
         this.modalService.dismissAll();
+      },
+      error: (error) => {
+        console.error(error);
       }
-    )
+    });
   }
 
   updateStock(id: number, qty: number) {
@@ -118,6 +96,40 @@ export class InventoryTableComponent implements OnInit {
         item.quantity += qty;
       }
     });
-    // item.quantity += qty;
   }
+
+
+  
+  openModal(modal: any) {
+		this.modalService.open(modal);
+	}
+
+  openModalView(modal: any, id: number) {
+    this.inventoryService.findInventory(id).subscribe({
+      next: (response: Inventory) => {
+        this.selectedItem = response;
+			},
+      error: (error) => {
+        console.error(error);
+      }
+    });
+    this.modalService.open(modal);
+	}
+
+  openModalEdit(modal: any, id: number) {
+    this.inventoryService.findInventory(id).subscribe({
+      next: (response: Inventory) => {
+        this.selectedItem = response;
+			},
+      error: (error) => {
+        console.error(error);
+      }
+    });
+    this.modalService.open(modal);
+	}
+
+  openModalDeleteConfirm(modal: any) {
+		this.modalService.open(modal, { centered: true });
+	}
+
 }

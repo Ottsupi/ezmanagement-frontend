@@ -1,1 +1,5 @@
 @import '~material-icons/iconfont/material-icons.css';
+
+.delete-highlight {
+    color: red;
+}
