@@ -1,17 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Inventory } from '../inventory';
 import { InventoryService } from '../inventory.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
 
 import { InventoryToCartService } from '../inventory-to-cart.service';
+import { Subject } from 'rxjs/internal/Subject';
+import { takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-inventory-table',
   templateUrl: './inventory-table.component.html',
   styleUrls: ['./inventory-table.component.css']
 })
-export class InventoryTableComponent implements OnInit {
+export class InventoryTableComponent implements OnInit, OnDestroy {
+
+  private destroy$ = new Subject<void>();
 
   allInventory: Inventory[] = [];
   selectedItem: Inventory = {
@@ -30,12 +34,21 @@ export class InventoryTableComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllInventory();
-    this.inventoryToCartService.refreshInventoryRequest$.subscribe((res) => {
-      if (res) this.getAllInventory();
-    })
-    this.inventoryToCartService.stockChanges$.subscribe((res) => {
-      this.updateStock(res.id, res.qty);
-    })
+    this.inventoryToCartService.refreshInventoryRequest$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        if (res) this.getAllInventory();
+      })
+    this.inventoryToCartService.stockChanges$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.updateStock(res.id, res.qty);
+      })
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   getAllInventory(): void {
