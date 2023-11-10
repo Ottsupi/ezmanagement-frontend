@@ -3,5 +3,6 @@ export interface Cart {
     name: string;
     price: number;
     quantity: number;
+    stock: number;
     computedPrice: number;
 }

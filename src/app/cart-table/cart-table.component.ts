@@ -30,7 +30,8 @@ export class CartTableComponent implements OnInit {
       name: item.name,
       price: item.price,
       computedPrice: item.price,
-      quantity: 1
+      quantity: 0,
+      stock: item.quantity
     }
 
     if (this.inCart.map(x => x.id).includes(item.id)) {
@@ -38,6 +39,7 @@ export class CartTableComponent implements OnInit {
       this.incrementQty(this.inCart[same]);
     } else {
       this.inCart.push(cartItem);
+      this.incrementQty(cartItem);
       this.calculateTotalPrice();
       this.calculateTotalQty();
     }
@@ -48,16 +50,20 @@ export class CartTableComponent implements OnInit {
     item.quantity++;
     this.updatePrice(item);
     this.calculateTotalQty();
+
+    this.inventoryToCartService.updateInventoryStock(item.id, -1);
   }
 
   decrementQty(item: Cart) {
     item.quantity--;
     this.updatePrice(item);
     this.calculateTotalQty();
+
+    this.inventoryToCartService.updateInventoryStock(item.id, 1);
   }
 
   clickIncrement(item: Cart) {
-    this.incrementQty(item);
+    if (item.stock > item.quantity) this.incrementQty(item);
   }
   
   clickDecrement(item: Cart) {
@@ -80,7 +86,13 @@ export class CartTableComponent implements OnInit {
   }
 
   calculateTotalQty() {
-    this.totalQty = this.inCart.length;
+    const qtyList = this.inCart.map(x => x.quantity);
+    let ctr = 0;
+    qtyList.forEach((price: any) => {
+      ctr += price;
+    });
+    
+    this.totalQty = ctr;
   }
 
   clearCart() {
@@ -96,11 +108,12 @@ export class CartTableComponent implements OnInit {
   }
 
   removeItem(id: number) {
-    const index = this.findItemIndexInCart(id);
+    const qtyInCart = this.inCart.filter(x => x.id == id)[0].quantity;
     const newCart = this.inCart.filter(x => x.id !== id);
     this.inCart = newCart;
 
     this.totalQty = this.inCart.length;
     this.calculateTotalPrice();
+    this.inventoryToCartService.updateInventoryStock(id, qtyInCart);
   }
 }

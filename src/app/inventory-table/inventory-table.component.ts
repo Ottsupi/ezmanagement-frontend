@@ -13,6 +13,13 @@ import { InventoryToCartService } from '../inventory-to-cart.service';
 export class InventoryTableComponent implements OnInit {
 
   allInventory: Inventory[] = [];
+  emptyItem: Inventory = {
+    id: 0,
+    name: '',
+    price: 0,
+    quantity: 0,
+    description: ''
+  };
   selectedItem: Inventory = {
     id: 0,
     name: '',
@@ -31,6 +38,9 @@ export class InventoryTableComponent implements OnInit {
     this.inventoryToCartService.refreshInventoryRequest$.subscribe((res) => {
       if (res) this.getAllInventory();
     })
+    this.inventoryToCartService.stockChanges$.subscribe((res) => {
+      this.updateStock(res.id, res.qty);
+    })
   }
 
   getAllInventory(): void {
@@ -43,8 +53,7 @@ export class InventoryTableComponent implements OnInit {
 
   sendToCart(inventory: Inventory): void {
     if (inventory.quantity > 0) {
-      this.inventoryToCartService.sendItem(inventory)
-      inventory.quantity--;
+      this.inventoryToCartService.sendItem(inventory);
     }
   }
 
@@ -101,5 +110,14 @@ export class InventoryTableComponent implements OnInit {
         this.modalService.dismissAll();
       }
     )
+  }
+
+  updateStock(id: number, qty: number) {
+    this.allInventory.forEach(item => {
+      if (item.id == id) {
+        item.quantity += qty;
+      }
+    });
+    // item.quantity += qty;
   }
 }
