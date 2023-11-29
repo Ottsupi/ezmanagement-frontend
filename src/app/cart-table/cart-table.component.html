@@ -45,6 +45,11 @@
             <td class="text-end">{{totalPrice | currency: 'PHP'}}</td>
             <td class="text-center">{{totalQty}} {{totalQty > 1 ? 'items' : 'item'}}</td>
         </tr>
+        <tr>
+            <button class="btn btn-lg bg-success text-white p-2 w-100 mt-2" (click)="placeOrder()">
+                <h3 class="m-0">Place Order</h3>
+            </button>
+        </tr>
     </tfoot>
 </table>
 

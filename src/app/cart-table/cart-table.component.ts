@@ -1,10 +1,13 @@
 import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { Cart } from '../cart';
+import { Transaction } from './transaction';
+import { TransactionItem } from './transaction-item';
 import { Inventory } from '../inventory';
 import { Subject, takeUntil } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { InventoryToCartService } from '../inventory-to-cart.service';
+import { CartService } from '../cart.service';
 
 @Component({
   selector: 'app-cart-table',
@@ -20,6 +23,7 @@ export class CartTableComponent implements OnInit, OnDestroy {
   totalQty: number = 0;
 
   constructor(
+    private cartService: CartService,
     private inventoryToCartService: InventoryToCartService,
     private modalService: NgbModal
   ) {}
@@ -106,13 +110,6 @@ export class CartTableComponent implements OnInit, OnDestroy {
     this.totalQty = ctr;
   }
 
-  clearCart() {
-    this.inCart = [];
-    this.totalPrice = 0;
-    this.totalQty = 0;
-    this.inventoryToCartService.requestRefreshInventory();
-  }
-
   findItemIndexInCart(id: number) {
     return this.inCart.findIndex((x) => x.id == id);
   }
@@ -127,6 +124,40 @@ export class CartTableComponent implements OnInit, OnDestroy {
     this.inventoryToCartService.updateInventoryStock(id, qtyInCart);
   }
 
+  clearCart() {
+    this.inCart = [];
+    this.totalPrice = 0;
+    this.totalQty = 0;
+    this.inventoryToCartService.requestRefreshInventory();
+  }
+
+  placeOrder() {
+    let transaction = {
+      totalPrice: this.totalPrice,
+      totalQuantity: this.totalQty,
+      totalItems: this.inCart.length
+    }
+    
+    let transactionItemsList: any[] = [];
+    this.inCart.forEach(item => {
+        let transactionItem = {
+          inventoryId: item.id,
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity,
+          totalPrice: item.computedPrice
+        }
+        transactionItemsList.push(transactionItem);
+      });
+
+    let orderDetails = {
+      transaction: transaction,
+      transactionItemsList: transactionItemsList
+    }
+
+    this.cartService.placeOrder(orderDetails).subscribe()
+    this.clearCart();
+  }
 
   openClearModal(modal: TemplateRef<any>) {
     if (this.inCart.length > 0) this.modalService.open(modal);
