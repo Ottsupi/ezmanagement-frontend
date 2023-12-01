@@ -36,6 +36,9 @@
                 >Add to cart</button>
             </td>
         </tr>
+        <tr *ngIf="allInventory.length==0">
+            <td colspan="5" class="text-center">No items in inventory</td>
+        </tr>
     </tbody>
     
 </table>

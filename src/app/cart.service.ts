@@ -11,8 +11,14 @@ export class CartService {
 
   constructor(private http: HttpClient) { }
 
-  public placeOrder(order: any): Observable<any> {
-    let response = this.http.post(`${this.apiServerUrl}/transaction/order`, order);
+  public placeOrder(order: any): Observable<boolean> {
+    let response = this.http.post<boolean>(`${this.apiServerUrl}/transaction/order`, order);
+    
+    return response;
+  }
+
+  public checkInv(order: any): Observable<any> {
+    let response = this.http.post(`${this.apiServerUrl}/transaction/checkInv`, order, {responseType: 'text'});
     
     return response;
   }

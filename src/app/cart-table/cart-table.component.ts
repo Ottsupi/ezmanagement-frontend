@@ -155,8 +155,14 @@ export class CartTableComponent implements OnInit, OnDestroy {
       transactionItemsList: transactionItemsList
     }
 
-    this.cartService.placeOrder(orderDetails).subscribe()
-    this.clearCart();
+    this.cartService.placeOrder(orderDetails).subscribe({
+      next: (res: boolean) => {
+				if (res) this.clearCart();
+			},
+      error: (error) => {
+        console.error(error)
+      }
+    });
   }
 
   openClearModal(modal: TemplateRef<any>) {
