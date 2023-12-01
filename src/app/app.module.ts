@@ -9,6 +9,9 @@ import { InventoryTableComponent } from './inventory-table/inventory-table.compo
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CartTableComponent } from './cart-table/cart-table.component';
+import { ShopWindowComponent } from './shop-window/shop-window.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { RecieptComponent } from './reciept/reciept.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +19,9 @@ import { CartTableComponent } from './cart-table/cart-table.component';
     ModalBasicComponent,
     InventoryTableComponent,
     CartTableComponent,
+    ShopWindowComponent,
+    NavbarComponent,
+    RecieptComponent,
   ],
   imports: [
     BrowserModule,

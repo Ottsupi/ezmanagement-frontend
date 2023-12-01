@@ -8,14 +8,14 @@ table .col-quantity {
     width: 10%;
 }
 
-td {
-    vertical-align: middle
-}
-
 .pointer {
     cursor: pointer;
 }
 
 .delete-highlight {
     color: red;
+}
+
+td {
+    vertical-align: middle
 }

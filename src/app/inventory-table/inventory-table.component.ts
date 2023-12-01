@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Inventory } from '../inventory';
-import { InventoryService } from '../inventory.service';
+import { Inventory } from '../model/inventory';
+import { InventoryService } from '../service/inventory.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
 
-import { InventoryToCartService } from '../inventory-to-cart.service';
+import { InventoryToCartService } from '../service/inventory-to-cart.service';
 import { Subject } from 'rxjs/internal/Subject';
 import { takeUntil } from 'rxjs';
 

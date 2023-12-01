@@ -17,19 +17,19 @@
     <tbody class="table-group-divider">
         <tr *ngFor="let item of inCart" class="align-middle">
             <td>
-                <button class="btn bg-danger text-white p-0 px-1 pt-1" (click)="removeItem(item.id)">
-                    <i class="material-icons m-0">close</i>
+                <button class="btn bg-danger text-white py-1 px-2" (click)="removeItem(item.id)">
+                    <!-- <i class="material-icons m-0">close</i> -->&#10005;
                 </button>
                 {{item.name}}
             </td>
             <td class="text-end">{{item.computedPrice | currency: 'PHP'}}</td>
             <td class=" text-center">
-                <button class="btn bg-danger text-white p-0 px-1 pt-1" (click)="clickDecrement(item)">
-                    <i class="material-icons m-0">remove</i>
+                <button class="btn bg-danger text-white py-1 px-3" (click)="clickDecrement(item)">
+                    <!-- <i class="material-icons m-0">remove</i> -->&#9473;
                 </button>
                 <span class="px-3">{{item.quantity}}</span>
-                <button class="btn bg-success text-white p-0 px-1 pt-1" (click)="clickIncrement(item)">
-                    <i class="material-icons">add</i>
+                <button class="btn bg-success text-white py-1 px-3" (click)="clickIncrement(item)">
+                    <!-- <i class="material-icons">add</i> -->&#10010;
                 </button>
             </td>
         </tr>

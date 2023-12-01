@@ -1,13 +1,13 @@
 import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
-import { Cart } from '../cart';
+import { Cart } from '../model/cart';
 import { Transaction } from './transaction';
 import { TransactionItem } from './transaction-item';
-import { Inventory } from '../inventory';
+import { Inventory } from '../model/inventory';
 import { Subject, takeUntil } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { InventoryToCartService } from '../inventory-to-cart.service';
-import { CartService } from '../cart.service';
+import { InventoryToCartService } from '../service/inventory-to-cart.service';
+import { CartService } from '../service/cart.service';
 
 @Component({
   selector: 'app-cart-table',
