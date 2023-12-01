@@ -51,6 +51,7 @@ export class CartTableComponent implements OnInit, OnDestroy {
       stock: item.quantity
     }
 
+    //TODO: refactor using .find()
     if (this.inCart.map(x => x.id).includes(item.id)) {
       let same = this.findItemIndexInCart(item.id);
       this.incrementQty(this.inCart[same]);

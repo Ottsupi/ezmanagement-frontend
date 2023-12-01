@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environment/environment';
+import { Transaction } from '../model/transaction';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class RecieptService {
 
   constructor(private http: HttpClient) { }
 
-  public getAllTransactions(): Observable<any> {
-    return this.http.get<any>(`${this.apiServerUrl}/transaction/all`);
+  public getAllTransactions(): Observable<Transaction[]> {
+    return this.http.get<Transaction[]>(`${this.apiServerUrl}/transaction/all`);
   }
 }
