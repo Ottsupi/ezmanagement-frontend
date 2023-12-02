@@ -75,7 +75,9 @@
     
             <tfoot class="table-group-divider" *ngIf="printQueue.length > 0">
                 <tr>
-                    <button class="btn btn-lg bg-primary text-white p-2 w-100 mt-2">
+                    <button class="btn btn-lg bg-primary text-white p-2 w-100 mt-2"
+                        (click)="onClickPrint()"
+                    >
                         <h3 class="m-0">Print All</h3>
                     </button>
                 </tr>

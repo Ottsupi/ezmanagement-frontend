@@ -1,3 +1,4 @@
+import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { RecieptService } from '../service/reciept.service';
 import { Transaction } from '../model/transaction';
@@ -50,5 +51,38 @@ export class RecieptComponent implements OnInit {
 
   clearPrintQueue(): void {
     this.printQueue = [];
+  }
+
+  sendPrintRequest(printList: number[]): void {
+    this.recieptService.getTestPrint().subscribe(response => {
+      this.handleFileDownload(response);
+    });
+  }
+
+  onClickPrint(): void {
+    let idList = this.printQueue.map(x => x.id);
+    console.log('Print list: ' + idList.toString())
+    // this.sendPrintRequest(idList);
+    this.recieptService.sendPrintRequest(idList).subscribe(response => {
+      this.handleFileDownload(response);
+    });
+  }
+
+  private handleFileDownload(response: HttpResponse<Blob>): void {
+    const contentDispositionHeader = response.headers.get('Content-Disposition');
+    console.log(contentDispositionHeader);
+    if (contentDispositionHeader != null) {
+      const filename = contentDispositionHeader.split(';')[1].trim().split('=')[1];
+  
+      const blob = new Blob([response.body as BlobPart], { type: response.body?.type });
+  
+      // Create a link element and trigger the download
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = filename;
+      link.click();
+    } else {
+      console.error('Content-Disposition header is missing in the response.');
+    }
   }
 }
