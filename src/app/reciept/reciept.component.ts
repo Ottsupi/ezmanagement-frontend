@@ -2,6 +2,8 @@ import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { RecieptService } from '../service/reciept.service';
 import { Transaction } from '../model/transaction';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { TransactionItem } from '../model/transaction-item';
 
 @Component({
   selector: 'app-reciept',
@@ -11,7 +13,8 @@ import { Transaction } from '../model/transaction';
 export class RecieptComponent implements OnInit {
 
   constructor(
-    private recieptService: RecieptService
+    private recieptService: RecieptService,
+    private modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
@@ -21,6 +24,8 @@ export class RecieptComponent implements OnInit {
 
   allTransaction: Transaction[] = [];
   printQueue: Transaction[] = [];
+  selectedTransaction: Transaction = {} as Transaction;
+  selectedTransactionItemList: TransactionItem[] = [];
 
 
   getAllTransactions(): void {
@@ -44,6 +49,13 @@ export class RecieptComponent implements OnInit {
 
   removeFromPrintQueue(reciept: Transaction): void {
     let index = this.printQueue.findIndex(x => x.id === reciept.id);
+    if (index !== -1) {
+      this.printQueue.splice(index, 1);
+    }
+  }
+
+  removeFromPrintQueueById(id: number): void {
+    let index = this.printQueue.findIndex(x => x.id === id);
     if (index !== -1) {
       this.printQueue.splice(index, 1);
     }
@@ -85,4 +97,35 @@ export class RecieptComponent implements OnInit {
       console.error('Content-Disposition header is missing in the response.');
     }
   }
+
+  openModalViewTransaction(modal: any, id: number) {
+    this.recieptService.findTransaction(id).subscribe(
+      res => {this.selectedTransaction = res}
+    )
+    this.recieptService.findTransactionDetails(id).subscribe(
+      res => {this.selectedTransactionItemList = res}
+    )
+
+    this.modalService.open(modal, {size: 'lg'});
+	}
+
+  openModalDeleteTransaction(modal: any, id: number) {
+    this.modalService.open(modal);
+  }
+
+  
+  onDeleteTransaction(id: number) {
+    this.removeFromPrintQueueById(id)
+    this.recieptService.deleteTransaction(id).subscribe({
+      complete: () => {
+        this.getAllTransactions();
+        this.modalService.dismissAll();
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
+
+
 }

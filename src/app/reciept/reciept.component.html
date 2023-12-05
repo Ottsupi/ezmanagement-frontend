@@ -16,16 +16,16 @@
             </thead>
             
             <tbody class="table-group-divider">
-                <tr *ngFor="let reciept of allTransaction">
+                <tr *ngFor="let receipt of allTransaction"  class="pointer" (click)="openModalViewTransaction(view, receipt.id)">
                     <!-- <td>{{item.id}}</td> -->
-                    <td class="pointer">{{reciept.id}}</td>
-                    <td class="pe-2">{{reciept.date | date: 'short'}}</td>
-                    <td class="text-end">{{reciept.totalPrice | currency: 'PHP'}}</td>
-                    <td class="text-center">{{reciept.totalQuantity}}</td>
-                    <td class="text-center">{{reciept.totalItems}}</td>
-                    <td class="col-actions">
+                    <td>{{receipt.id}}</td>
+                    <td class="pe-2">{{receipt.date | date: 'short'}}</td>
+                    <td class="text-end">{{receipt.totalPrice | currency: 'PHP'}}</td>
+                    <td class="text-center">{{receipt.totalQuantity}}</td>
+                    <td class="text-center">{{receipt.totalItems}}</td>
+                    <td class="col-actions" (click)="$event.stopPropagation()">
                         <button class="btn bg-success text-white me-1 py-1 px-2"
-                            (click)="addToPrintQueue(reciept)"
+                            (click)="addToPrintQueue(receipt)"
                         >Add to Print Queue</button>
                     </td>
                 </tr>
@@ -85,4 +85,56 @@
         </table>
     </div>
 </div>
-    
+
+<ng-template #view let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-basic-title">Transaction information</h4>
+		<button ngbAutofocus type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+	</div>
+	<div class="modal-body">
+        <table class="table table-striped table-hover">
+            <thead>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total Price</th>
+            </thead>
+            <tbody class="table-group-divider">
+                <tr *ngFor="let item of selectedTransactionItemList">
+                    <td>{{item.name}}</td>
+                    <td>{{item.price  | currency: 'PHP' }}</td>
+                    <td>{{item.quantity}}</td>
+                    <td>{{item.totalPrice  | currency: 'PHP'}}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="text-end">Total Price: </td>
+                    <td>{{selectedTransaction.totalPrice | currency: 'PHP'}}</td>
+                </tr>
+            </tfoot>
+        </table>
+	</div>
+    <div class="modal-footer" (click)="openModalDeleteTransaction(delete, selectedTransaction.id)">
+        <button class="btn btn-lg btn-outline-danger">Delete Item</button>
+    </div>
+</ng-template>
+
+<ng-template #delete let-modal class="pb-5">
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-basic-title">Delete item</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+        <h4>
+            Are you sure you want to <span class="delete-highlight">delete this transaction</span>?
+        </h4>
+	</div>
+	<div class="modal-footer border-0">
+        <button type="submit" form="addForm" class="btn btn-lg btn-secondary" 
+            (click)="modal.dismiss()" ngbAutofocus>Cancel</button>
+        <button class="btn btn-lg btn-outline-danger" 
+        (click)="onDeleteTransaction(selectedTransaction.id); modal.dismiss()"
+        >Delete Item</button>
+	</div>
+</ng-template>

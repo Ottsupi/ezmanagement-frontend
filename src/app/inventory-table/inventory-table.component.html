@@ -20,14 +20,14 @@
     </thead>
     
     <tbody class="table-group-divider">
-        <tr *ngFor="let item of allInventory" class="align-middle">
+        <tr *ngFor="let item of allInventory" class="align-middle"  class="pointer" (click)="openModalView(view, item.id)">
             <!-- <td>{{item.id}}</td> -->
-            <td class="pointer" (click)="openModalView(view, item.id)">
+            <td>
                 {{item.name}}</td>
             <td class="text-end pe-2">{{item.price | currency: 'PHP'}}</td>
             <td class="text-end">{{item.quantity}}</td>
             <td>{{item.description}}</td>
-            <td class="col-actions">
+            <td class="col-actions" (click)="$event.stopPropagation()">
                 <button class="btn bg-primary text-white me-1 py-1 px-2" 
                     (click)="openModalEdit(edit, item.id)"
                 >Edit</button>
