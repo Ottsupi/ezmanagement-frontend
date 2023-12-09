@@ -5,7 +5,7 @@ import { RecieptComponent } from './reciept/reciept.component';
 
 const routes: Routes = [
   { path: '', component: ShopWindowComponent },
-  { path: 'reciept', component: RecieptComponent }
+  { path: 'receipt', component: RecieptComponent }
 ];
 
 @NgModule({

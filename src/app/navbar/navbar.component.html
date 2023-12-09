@@ -1,18 +1,15 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">EZ Management</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-            <a class="nav-link active" aria-current="page" routerLink="">Shop</a>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link" routerLink="/reciept">Reciept</a>
-            </li>
-        </ul>
-        </div>
-    </div>
-</nav>
+<div class="nav-bar-container d-flex flex-row bg-yellow py-2">
+    <a class="ms-3 font-nav-title" routerLink="">EZ MANAGEMENT</a>
+    <a class="font-nav-link ms-5 align-self-center p-1 px-2 rounded-3"  
+        [ngClass]="{
+            'text-white': inShop,
+            'bg-blue': inShop
+        }"
+        routerLink="">Shop</a>
+    <a class="font-nav-link ms-4 align-self-center p-1 px-2 rounded-3" 
+        [ngClass]="{
+            'text-white': inReceipt,
+            'bg-blue': inReceipt
+        }"
+    routerLink="/receipt">Receipt</a>
+</div>

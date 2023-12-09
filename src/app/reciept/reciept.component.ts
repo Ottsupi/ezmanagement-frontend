@@ -43,7 +43,7 @@ export class RecieptComponent implements OnInit {
     let check = this.printQueue.find(x => x.id === reciept.id);
     if (check === undefined) {
       this.printQueue.push(reciept);
-      this.printQueue.sort((a, b) => b.totalItems - a.totalItems);
+      this.printQueue.sort((a, b) => a.totalItems - b.totalItems);
     }
   }
 
@@ -110,7 +110,7 @@ export class RecieptComponent implements OnInit {
 	}
 
   openModalDeleteTransaction(modal: any, id: number) {
-    this.modalService.open(modal);
+    this.modalService.open(modal, { centered: true });
   }
 
   

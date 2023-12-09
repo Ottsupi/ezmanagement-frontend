@@ -18,6 +18,7 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   allInventory: Inventory[] = [];
+  filteredInventory: Inventory[] = [];
   selectedItem: Inventory = {
     id: 0,
     name: '',
@@ -25,6 +26,7 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
     quantity: 0,
     description: ''
   };
+  searchText: String = "";
 
   constructor(
     private inventoryService: InventoryService,
@@ -33,7 +35,7 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.getAllInventory();
+    this.getFilteredInventory();
     this.inventoryToCartService.refreshInventoryRequest$
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
@@ -55,6 +57,18 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
     this.inventoryService.getAllInventory().subscribe({
       next: (response: Inventory[]) => {
         this.allInventory = response;
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
+  getFilteredInventory(): void {
+    this.inventoryService.getAllInventory().subscribe({
+      next: (response: Inventory[]) => {
+        this.allInventory = response;
+        this.filteredInventory = response;
+        this.handleSearch(this.searchText);
       },
       error: (error) => {
         console.error(error);
@@ -83,7 +97,8 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
   onUpdateInventory(editForm: NgForm) {
     this.inventoryService.updateInventory(editForm.value).subscribe({
       complete: () => {
-        this.getAllInventory();
+        this.inventoryToCartService.requestRemoveItemById(this.selectedItem.id);
+        this.getFilteredInventory();
 			},
       error: (error) => {
         console.error(error);
@@ -92,6 +107,7 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
   }
 
   onDeleteInventory(id: number) {
+    this.inventoryToCartService.requestRemoveItemById(id);
     this.inventoryService.deleteInventory(id).subscribe({
       complete: () => {
         this.getAllInventory();
@@ -101,6 +117,18 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
         console.error(error);
       }
     });
+  }
+
+  handleSearch(text: String) {
+    this.filteredInventory = this.allInventory.filter(item => 
+      item.name.toLowerCase().includes(text.toLowerCase()) ||
+      item.description.toLowerCase().includes(text.toLowerCase())
+    );
+  }
+
+  clearSearch() {
+    this.handleSearch("");
+    this.searchText = "";
   }
 
   updateStock(id: number, qty: number) {

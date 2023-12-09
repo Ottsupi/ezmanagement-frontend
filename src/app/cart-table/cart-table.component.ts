@@ -34,6 +34,11 @@ export class CartTableComponent implements OnInit, OnDestroy {
       .subscribe((res) => {
         this.addToCart(res);
       })
+    this.inventoryToCartService.removeItemById$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.removeItem(res);
+      })
   }
 
   ngOnDestroy(): void {

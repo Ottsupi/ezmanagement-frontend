@@ -1,76 +1,96 @@
-<div class="d-flex flex-row justify-content-between align-items-center">
-    <div class="display-4 text-white">Cart</div>
-    <button class="d-flex btn btn-lg bg-danger text-white mt-2" (click)="openClearModal(clear)">
-        Clear 
-    </button>
+<div class="title-container">
+    <div class="d-flex flex-row justify-content-between align-items-center mb-2">
+        <div class="font-title-large">Cart</div>
+        <button  *ngIf="totalQty > 0"
+        class="d-flex btn btn-lg bg-red mt-2 px-4 ez-pill"
+        (click)="openClearModal(clear)">
+            <span class="font-button-large">Clear</span>
+        </button>
+    </div>
 </div>
-<table class="table table-striped table-hover table-dark">
-    <thead>
-        <tr class="text-center">
-            <!-- <th>#</th> -->
-            <th>Name</th>
-            <th class="col-price">Price</th>
-            <th class="col-quantity">Quantity</th>
-        </tr>
-    </thead>
-    
-    <tbody class="table-group-divider">
-        <tr *ngFor="let item of inCart" class="align-middle">
-            <td>
-                <button class="btn bg-danger text-white py-1 px-2" (click)="removeItem(item.id)">
-                    <!-- <i class="material-icons m-0">close</i> -->&#10005;
-                </button>
-                {{item.name}}
-            </td>
-            <td class="text-end">{{item.computedPrice | currency: 'PHP'}}</td>
-            <td class=" text-center">
-                <button class="btn bg-danger text-white py-1 px-3" (click)="clickDecrement(item)">
-                    <!-- <i class="material-icons m-0">remove</i> -->&#9473;
-                </button>
-                <span class="px-3">{{item.quantity}}</span>
-                <button class="btn bg-success text-white py-1 px-3" (click)="clickIncrement(item)">
-                    <!-- <i class="material-icons">add</i> -->&#10010;
-                </button>
-            </td>
-        </tr>
-        <tr *ngIf="totalQty==0">
-            <td colspan="4" class="text-center">No items in cart</td>
-        </tr>
-    </tbody>
 
+<div class="table-container disable-scrollbars">
+    <table class="table table-striped table-hover giro-table mb-0">
+        <thead>
+            <tr class="text-center">
+                <!-- <th>#</th> -->
+                <th><span class="font-title">Name</span></th>
+                <th><span class="font-title">Price</span></th>
+                <th><span class="font-title">Quantity</span></th>
+            </tr>
+        </thead>
+        
+        <tbody class="table-group-divider">
+            <tr *ngFor="let item of inCart" class="align-middle">
+                <td>
+                    <button class="btn bg-danger text-white pt-0 pb-1 px-2" (click)="removeItem(item.id)">
+                        <span class="font-button">X</span>
+                    </button>
+                    <span class="font-data ps-2">{{item.name}}</span>
+                </td>
+                <td class="text-end"><span class="font-data">{{item.computedPrice | currency: 'PHP'}}</span></td>
+                <td class=" text-center">
+                    <button class="btn bg-danger text-white py-0 px-2" (click)="clickDecrement(item)">
+                        <span class="font-title">&ndash;</span>
+                    </button>
+                    <span class="px-3"><span class="font-data">{{item.quantity}}</span></span>
+                    <button class="btn bg-success text-white py-0 px-2" (click)="clickIncrement(item)">
+                        <span class="font-title">+</span>
+                    </button>
+                </td>
+            </tr>
+            <tr *ngIf="totalQty==0">
+                <td colspan="4" class="text-center table-empty">
+                    <span class="font-title-large">No items in cart</span>
+                </td>
+            </tr>
+        </tbody>
     
-    <tfoot class="table-group-divider" *ngIf="totalQty > 0">
-        <tr>
-            <td class="text-end">Total Price</td>
-            <td class="text-end">{{totalPrice | currency: 'PHP'}}</td>
-            <td class="text-center">{{totalQty}} {{totalQty > 1 ? 'items' : 'item'}}</td>
-        </tr>
-        <tr>
-            <!-- <td> -->
-                <button class="btn btn-lg bg-success text-white p-2 w-100 mt-2" (click)="placeOrder()">
-                    <h3 class="m-0">Place Order</h3>
-                </button>
-            <!-- </td> -->
-        </tr>
-    </tfoot>
-</table>
+        <tfoot class="table-group-divider" *ngIf="totalQty > 0">
+            <tr>
+                <td class="text-end">
+                    <span class="font-title">Total:</span>
+                </td>
+                <td class="text-end">
+                    <span class="font-data-large">{{totalPrice | currency: 'PHP'}}</span>
+                </td>
+                <td class="text-center">
+                    <span class="font-data-large">{{totalQty}} {{totalQty > 1 ? 'items' : 'item'}}</span>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+    <div *ngIf="totalQty > 0" class="d-flex flex-row justify-content-end">
+        <button class="btn btn-lg bg-blue px-4 ez-pill" (click)="placeOrder()">
+            <span class="font-button-large bg-blue text-white">Place Order</span>
+        </button>
+    </div>
+</div>
+
 
 
 <ng-template #clear let-modal class="pb-5">
 	<div class="modal-header border-0">
 	</div>
 	<div class="modal-body">
-        <span >
-            <h4>
-                Are you sure you want to <span class="delete-highlight">clear the cart</span>?
-            </h4> 
-        </span>
+        <div class="d-flex flex-column text-center">
+            <span class="font-title-large font-black">Clear Cart</span>
+            <span class="font-text font-black mb-5">
+                Are you sure you want to 
+                <span class="txt-red">clear the cart</span>?
+            </span>
+            <div class="d-flex flex-row">
+                <button type="submit" form="addForm" class="w-50 btn btn-lg btn-outline-success border-2 ms-4 me-2" 
+                    (click)="modal.dismiss()" ngbAutofocus>
+                    <span class="font-title-mnc">Cancel</span>
+                </button>
+                <button class="w-50 btn btn-lg btn-danger ms-2 me-4" 
+                    (click)="clearCart(); modal.close()">
+                    <span class="font-title-m">Clear Cart</span>
+                </button>
+            </div>
+        </div>
 	</div>
 	<div class="modal-footer border-0">
-        <button type="submit" form="addForm" class="btn btn-lg btn-secondary" 
-            (click)="modal.dismiss()" ngbAutofocus>Cancel</button>
-        <button class="btn btn-lg btn-outline-danger" 
-        (click)="clearCart(); modal.close()"
-        >Clear Cart</button>
 	</div>
 </ng-template>

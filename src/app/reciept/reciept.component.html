@@ -1,140 +1,185 @@
 <div class="row m-0">
     <div class="col-7">
-        <div class="d-flex flex-row justify-content-between align-items-center">
-            <div class="display-4 text-white">Receipt</div>
+        <div class="title-container title-container-left">
+            <div class="d-flex flex-row justify-content-between align-items-center mb-2">
+                <div class="font-title-large">Receipts</div>
+            </div>
         </div>
-        <table class="table table-striped table-hover table-dark">
-            <thead>
-                <tr class="text-center">
-                    <th>ID</th>
-                    <th>Date</th>
-                    <th>Total Price</th>
-                    <th>Total Items</th>
-                    <th>Items</th>
-                    <th class="col-actions">Actions</th>
-                </tr>
-            </thead>
-            
-            <tbody class="table-group-divider">
-                <tr *ngFor="let receipt of allTransaction"  class="pointer" (click)="openModalViewTransaction(view, receipt.id)">
-                    <!-- <td>{{item.id}}</td> -->
-                    <td>{{receipt.id}}</td>
-                    <td class="pe-2">{{receipt.date | date: 'short'}}</td>
-                    <td class="text-end">{{receipt.totalPrice | currency: 'PHP'}}</td>
-                    <td class="text-center">{{receipt.totalQuantity}}</td>
-                    <td class="text-center">{{receipt.totalItems}}</td>
-                    <td class="col-actions" (click)="$event.stopPropagation()">
-                        <button class="btn bg-success text-white me-1 py-1 px-2"
-                            (click)="addToPrintQueue(receipt)"
-                        >Add to Print Queue</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="6" class="text-center"
-                    *ngIf="allTransaction.length == 0"
-                    >No transactions to available</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-container table-container-left disable-scrollbars">
+            <table class="table table-striped table-hover giro-table">
+                <thead>
+                    <tr class="text-center">
+                        <th><span class="font-title">ID</span></th>
+                        <th><span class="font-title">Date</span></th>
+                        <th><span class="font-title">Total Price</span></th>
+                        <th><span class="font-title">Total Items</span></th>
+                        <th><span class="font-title">Items</span></th>
+                        <th class="col-actions">
+                            <span class="font-title">Actions</span>
+                        </th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    <tr *ngFor="let receipt of allTransaction"  class="pointer" (click)="openModalViewTransaction(view, receipt.id)">
+                        <td class="ps-3">
+                            <span class="font-data">{{receipt.id}}</span>
+                        </td>
+                        <td class="text-center">
+                            <span class="font-data">{{receipt.date | date: 'MMM dd y | hh:mma'}}</span>
+                        </td>
+                        <td class="text-end">
+                            <span class="font-data">{{receipt.totalPrice | currency: 'PHP'}}</span>
+                        </td>
+                        <td class="text-center">
+                            <span class="font-data">{{receipt.totalQuantity}}</span>
+                        </td>
+                        <td class="text-center">
+                            <span class="font-data">{{receipt.totalItems}}</span>
+                        </td>
+                        <td class="col-actions" (click)="$event.stopPropagation()">
+                            <button class="btn btn-success ez-pill pt-1 ms-1"
+                                (click)="addToPrintQueue(receipt)">
+                                <span class="font-button">Add to Print Queue</span></button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="allTransaction.length == 0">
+                        <td colspan="6" class="text-center table-empty">
+                            <span class="font-title-large">No transactions to show</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
     </div>
 
     <div class="col">
-        <div class="d-flex flex-row justify-content-between align-items-center">
-            <div class="display-4 text-white">Print Queue</div>
-            <button class="d-flex btn btn-lg bg-danger text-white mt-2" (click)="clearPrintQueue()">
-                Clear 
-            </button>
+        <div class="title-container title-container-right m-0">
+            <div class="d-flex flex-row justify-content-between align-items-center mb-2">
+                <div class="font-title-large">Print Queue</div>
+                <button *ngIf="printQueue.length > 0"
+                class="d-flex btn btn-lg bg-red mt-2 px-4 ez-pill"
+                (click)="clearPrintQueue()">
+                    <span class="font-button-large">Clear</span>
+                </button>
+            </div>
         </div>
-        <table class="table table-striped table-hover table-dark">
-            <thead>
-                <tr class="text-center">
-                    <th>ID</th>
-                    <th>Total Price</th>
-                    <th>Total Items</th>
-                    <th class="col-actions">Actions</th>
-                </tr>
-            </thead>
-            
-            <tbody class="table-group-divider">
-                <tr *ngFor="let reciept of printQueue" class="text-center">
-                    <td class="pointer">{{reciept.id}}</td>
-                    <td class="text-end">{{reciept.totalPrice | currency: 'PHP'}}</td>
-                    <td class="text-center">{{reciept.totalItems}}</td>
-                    <td>
-                        <button class="btn bg-danger text-white me-1 py-1 px-2"
-                        (click)="removeFromPrintQueue(reciept)"
-                        >Remove</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="5" class="text-center"
-                    *ngIf="printQueue.length == 0"
-                    >Nothing in print queue</td>
-                </tr>
-            </tbody>
-    
-            <tfoot class="table-group-divider" *ngIf="printQueue.length > 0">
-                <tr>
-                    <button class="btn btn-lg bg-primary text-white p-2 w-100 mt-2"
-                        (click)="onClickPrint()"
-                    >
-                        <h3 class="m-0">Print All</h3>
-                    </button>
-                </tr>
-            </tfoot>
-        </table>
+        <div class="table-container table-container-right disable-scrollbars">
+            <table class="table table-striped table-hover giro-table">
+                <thead>
+                    <tr class="text-center">
+                        <th><span class="font-title">ID</span></th>
+                        <th><span class="font-title">Total Price</span></th>
+                        <th><span class="font-title">Items</span></th>
+                        <th class="col-actions"><span class="font-title">Actions</span></th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    <tr *ngFor="let reciept of printQueue" class="text-center">
+                        <td class="pointer"><span class="font-data">{{reciept.id}}</span></td>
+                        <td class="text-end"><span class="font-data">{{reciept.totalPrice | currency: 'PHP'}}</span></td>
+                        <td class="text-center"><span class="font-data">{{reciept.totalItems}}</span></td>
+                        <td>
+                            <button class="btn bg-red ez-pill pt-1"
+                            (click)="removeFromPrintQueue(reciept)">
+                                <span class="font-button">Remove</span>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="printQueue.length == 0">
+                        <td colspan="5" class="text-center table-empty">
+                            <span class="font-title-large">Nothing in queue</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div *ngIf="printQueue.length > 0" class="d-flex flex-row justify-content-end">
+                <button class="btn btn-lg bg-blue px-4 ez-pill"
+                    (click)="onClickPrint()">
+                    <span class="font-button-large">Print All</span>
+                </button>
+            </div>
+        </div>
+        
     </div>
 </div>
 
 <ng-template #view let-modal>
-	<div class="modal-header">
-		<h4 class="modal-title" id="modal-basic-title">Transaction information</h4>
-		<button ngbAutofocus type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
-	</div>
-	<div class="modal-body">
-        <table class="table table-striped table-hover">
+    <div class="table-container" id="viewTransaction">
+        <div class="d-flex flex-row justify-content-center my-3">
+            <div class="me-3">
+                <span class="font-title">ID: </span> <span class="font-data-large">{{selectedTransaction.id}}</span>
+            </div>
+            <div class="">
+                <span class="font-title">Date: </span> <span class="font-data-large">{{selectedTransaction.date | date: 'MMM dd y | hh:mma'}}</span>
+            </div>
+        </div>
+        
+        <table class="w-100 table-striped table-hover giro-table">
             <thead>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total Price</th>
+                <th><span class="font-title">Name</span></th>
+                <th><span class="font-title">Price</span></th>
+                <th><span class="font-title">Quantity</span></th>
+                <th><span class="font-title">Total Price</span></th>
             </thead>
             <tbody class="table-group-divider">
                 <tr *ngFor="let item of selectedTransactionItemList">
-                    <td>{{item.name}}</td>
-                    <td>{{item.price  | currency: 'PHP' }}</td>
-                    <td>{{item.quantity}}</td>
-                    <td>{{item.totalPrice  | currency: 'PHP'}}</td>
+                    <td><span class="font-data ps-3">{{item.name}}</span></td>
+                    <td class="text-end"><span class="font-data">{{item.price  | currency: 'PHP'}}</span></td>
+                    <td class="text-center"><span class="font-data">{{item.quantity}}</span></td>
+                    <td class="text-end"><span class="font-data pe-3">{{item.totalPrice  | currency: 'PHP'}}</span></td>
                 </tr>
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="3" class="text-end">Total Price: </td>
-                    <td>{{selectedTransaction.totalPrice | currency: 'PHP'}}</td>
+                    <td colspan="3" class="text-end">
+                        <span class="font-data-large">Total Price:</span> 
+                    </td>
+                    <td class="text-end">
+                        <span class="font-data-large pe-3">{{selectedTransaction.totalPrice | currency: 'PHP'}}</span>
+                    </td>
                 </tr>
             </tfoot>
         </table>
-	</div>
-    <div class="modal-footer" (click)="openModalDeleteTransaction(delete, selectedTransaction.id)">
-        <button class="btn btn-lg btn-outline-danger">Delete Item</button>
+    </div>
+    <div class="modal-footer border-0">
+        <div class="d-flex flex-row">
+            <button type="submit" form="addForm" class="btn btn-lg btn-secondary border-2 ms-4 me-2" 
+                (click)="modal.dismiss()" ngbAutofocus>
+                <span class="font-title-mnc">Dismiss</span>
+            </button>
+            <button class="btn btn-lg btn-danger ms-2 me-4" 
+                (click)="openModalDeleteTransaction(delete, selectedTransaction.id)">
+                <span class="font-title-m">Delete</span>
+            </button>
+        </div>
     </div>
 </ng-template>
 
 <ng-template #delete let-modal class="pb-5">
-	<div class="modal-header">
-		<h4 class="modal-title" id="modal-basic-title">Delete item</h4>
-		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	<div class="modal-header bg-gray border-0">
 	</div>
-	<div class="modal-body">
-        <h4>
-            Are you sure you want to <span class="delete-highlight">delete this transaction</span>?
-        </h4>
+	<div class="modal-body bg-gray">
+        <div class="d-flex flex-column text-center">
+            <span class="font-title-large font-black">Delete Transaction</span>
+            <span class="font-text font-black mb-5">
+                Are you sure you want to 
+                <span class="txt-red">delete this transaction</span>?
+            </span>
+            <div class="d-flex flex-row">
+                <button type="submit" form="addForm" class="w-50 btn btn-lg btn-outline-success border-2 ms-4 me-2" 
+                    (click)="modal.dismiss()" ngbAutofocus>
+                    <span class="font-title-mnc">Cancel</span>
+                </button>
+                <button class="w-50 btn btn-lg btn-danger ms-2 me-4" 
+                    (click)="onDeleteTransaction(selectedTransaction.id)">
+                    <span class="font-title-m">Delete</span>
+                </button>
+            </div>
+        </div>
 	</div>
-	<div class="modal-footer border-0">
-        <button type="submit" form="addForm" class="btn btn-lg btn-secondary" 
-            (click)="modal.dismiss()" ngbAutofocus>Cancel</button>
-        <button class="btn btn-lg btn-outline-danger" 
-        (click)="onDeleteTransaction(selectedTransaction.id); modal.dismiss()"
-        >Delete Item</button>
+	<div class="modal-footer border-0 bg-gray">
 	</div>
 </ng-template>

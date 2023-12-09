@@ -9,13 +9,18 @@ export class InventoryToCartService {
   private item = new Subject<Inventory>();
   private refreshInventory = new Subject<boolean>();
   private stockChanges = new Subject<stockChange>();
+  private itemId = new Subject<number>();
 
   itemObservable$ = this.item.asObservable();
   refreshInventoryRequest$ = this.refreshInventory.asObservable();
   stockChanges$ = this.stockChanges.asObservable();
+  removeItemById$ = this.itemId.asObservable();
 
   sendItem(item: Inventory) {
     this.item.next(item)
+  }
+  requestRemoveItemById(id: number) {
+    this.itemId.next(id);
   }
   requestRefreshInventory() {
     this.refreshInventory.next(true)

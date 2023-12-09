@@ -1,1 +1,170 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata&family=Montserrat:wght@800&family=Open+Sans&display=swap');
+
+
+html, body {
+    min-height: 100vh;
+    /* padding: 0px 0px 0px 0px; */
+    margin: 0 0 0 0;
+    background-color: #2A3134 !important; 
+    overflow-x: hidden;
+}
+
+.bg-main {
+    background-color: #107A54 !important;
+}
+.bg-main-dark {
+    background-color: #2A3134 !important;
+}
+.bg-main-black {
+    background-color: #1F2528 !important;
+}
+.bg-yellow {
+    background-color: #EEA944 !important;
+}
+.bg-blue {
+    background-color: #025FDF !important;
+}
+.bg-red {
+    background-color: #C73D3A !important;
+}
+.bg-cyan {
+    background-color: #2EACD4 !important;
+}
+.bg-gray {
+    background-color: #EEF0ED;
+}
+
+
+.font-button {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    color: white;
+}
+.font-button-large {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 28px;
+    color: white;
+}
+.font-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    color: white;
+}
+.font-title-large {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 3rem;
+    color: white;
+}
+.font-title-m {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.5rem;
+    color: white;
+}
+.font-title-mnc {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.5rem;
+}
+.font-data {
+    font-family: 'Inconsolata', monospace;
+    font-size: 14px;
+    color: white;
+}
+.font-data-large {
+    font-family: 'Inconsolata', monospace;
+    font-size: 18px;
+    color: white;
+}
+.font-data-xl {
+    font-family: 'Inconsolata', monospace;
+    font-size: 24px;
+}
+.font-text {
+    font-family: 'Open Sans', serif;
+    font-size: 16px;
+    color: white;
+}
+.font-nav-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.25rem;
+    color: black;
+}
+.font-nav-link {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 24px;
+    color: black;
+}
+.font-black {
+    color: black !important;
+}
+
+.facade-wrapper {
+    display: grid;
+    grid-template-columns: 0 repeat(4, 1fr) 0;
+    grid-template-rows: auto 1fr;
+    grid-template-areas: 
+        "nav    nav    nav    nav    nav   nav"
+    ;
+
+    gap: 10px;
+
+    height: 100vh;
+    width: 100%;
+}
+
+.nav-bar-container {
+    grid-area: nav;
+}
+
+.ez-pill {
+    border-radius: 36px !important;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.disable-scrollbars::-webkit-scrollbar {
+    background: transparent; /* Chrome/Safari/Webkit */
+    width: 0px;
+}
+        
+.disable-scrollbars {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* IE 10+ */
+}
+
+.ez-form-display input,
+.ez-form-display textarea {
+    font-family: 'Inconsolata', monospace;
+    font-size: 14px;
+}
+
+.button-delete {
+    border-color: #C73D3A;
+}
+.button-delete > span {
+    color: #C73D3A;
+}
+.button-delete:hover > span {
+    color: white;
+}
+
+.modal .modal-content {
+    border-radius: 48px;
+}
+.modal .modal-content .modal-header {
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+}
+.modal .modal-content .modal-footer {
+    border-bottom-left-radius: 18px;
+    border-bottom-right-radius: 18px;
+}
+
+.txt-red {
+    color: #C73D3A;
+}
+
+.overflow-text {
+    text-overflow: ellipsis;
+}
